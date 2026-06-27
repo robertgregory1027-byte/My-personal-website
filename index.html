@@ -286,9 +286,7 @@
         <p style="font-size:14px; font-weight:300; color:rgba(255,255,255,0.45);">I'll get back to you within 24 hours.</p>
       </div>
 
-      <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" style="max-width:560px;">
-        <input type="hidden" name="form-name" value="contact" />
-        <p style="display:none;"><input name="bot-field" /></p>
+      <form id="contact-form" action="https://formspree.io/f/xqevbple" method="POST" style="max-width:560px;">
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
           <div>
@@ -345,13 +343,17 @@
       const form = e.target;
       const data = new FormData(form);
       try {
-        await fetch('/', {
+        const res = await fetch('https://formspree.io/f/xqevbple', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          body: new URLSearchParams(data).toString()
+          body: data,
+          headers: { 'Accept': 'application/json' }
         });
-        form.style.display = 'none';
-        document.getElementById('form-success').style.display = 'block';
+        if (res.ok) {
+          form.style.display = 'none';
+          document.getElementById('form-success').style.display = 'block';
+        } else {
+          alert('Something went wrong. Please email me directly at robertgregory1027@gmail.com');
+        }
       } catch(err) {
         alert('Something went wrong. Please email me directly at robertgregory1027@gmail.com');
       }
